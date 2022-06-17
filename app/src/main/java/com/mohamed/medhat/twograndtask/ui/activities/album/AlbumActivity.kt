@@ -1,13 +1,13 @@
-package com.mohamed.medhat.twograndtask
+package com.mohamed.medhat.twograndtask.ui.activities.album
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.GridCells
-import androidx.compose.foundation.lazy.LazyVerticalGrid
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.runtime.*
@@ -18,8 +18,10 @@ import com.mohamed.medhat.twograndtask.ui.compose.PhotoItem
 import com.mohamed.medhat.twograndtask.ui.compose.SearchTextField
 import com.mohamed.medhat.twograndtask.ui.compose.fakePhoto
 import com.mohamed.medhat.twograndtask.ui.theme.TwoGrandTaskTheme
+import dagger.hilt.android.AndroidEntryPoint
 
 @ExperimentalFoundationApi
+@AndroidEntryPoint
 class AlbumActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,7 +54,7 @@ fun AlbumsBody() {
         // TODO replace the fake photos with real data
         val fakePhotos = List(20) { fakePhoto }
         LazyVerticalGrid(
-            cells = GridCells.Fixed(3),
+            columns = GridCells.Fixed(3),
             verticalArrangement = Arrangement.spacedBy(1.dp),
             horizontalArrangement = Arrangement.spacedBy(1.dp),
             contentPadding = PaddingValues(1.dp)
