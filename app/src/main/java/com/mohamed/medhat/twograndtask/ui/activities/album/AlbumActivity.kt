@@ -11,12 +11,14 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.mohamed.medhat.twograndtask.ui.activities.main.ALBUM_ID
 import com.mohamed.medhat.twograndtask.ui.compose.PhotoItem
 import com.mohamed.medhat.twograndtask.ui.compose.SearchTextField
-import com.mohamed.medhat.twograndtask.ui.compose.fakePhoto
 import com.mohamed.medhat.twograndtask.ui.theme.TwoGrandTaskTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -26,6 +28,10 @@ class AlbumActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            val viewModel: AlbumViewModel = viewModel()
+            if (intent != null && intent.hasExtra(ALBUM_ID)) {
+                viewModel.loadPhotos(intent.extras?.getInt(ALBUM_ID) ?: -1)
+            }
             TwoGrandTaskTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
@@ -41,26 +47,27 @@ class AlbumActivity : ComponentActivity() {
 
 @ExperimentalFoundationApi
 @Composable
-fun AlbumsBody() {
+fun AlbumsBody(viewModel: AlbumViewModel = viewModel()) {
     var searchValue by remember {
         mutableStateOf("")
     }
+    val photos by viewModel.photos.observeAsState()
     Column(Modifier.fillMaxSize()) {
         Box(modifier = Modifier.heightIn(min = 48.dp)) {
             Surface(elevation = 4.dp) {
                 SearchTextField(value = searchValue, onValueChanged = { searchValue = it })
             }
         }
-        // TODO replace the fake photos with real data
-        val fakePhotos = List(20) { fakePhoto }
-        LazyVerticalGrid(
-            columns = GridCells.Fixed(3),
-            verticalArrangement = Arrangement.spacedBy(1.dp),
-            horizontalArrangement = Arrangement.spacedBy(1.dp),
-            contentPadding = PaddingValues(1.dp)
-        ) {
-            items(fakePhotos) {
-                PhotoItem(photo = it)
+        photos?.let {
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(3),
+                verticalArrangement = Arrangement.spacedBy(1.dp),
+                horizontalArrangement = Arrangement.spacedBy(1.dp),
+                contentPadding = PaddingValues(1.dp)
+            ) {
+                items(it) {
+                    PhotoItem(photo = it)
+                }
             }
         }
     }

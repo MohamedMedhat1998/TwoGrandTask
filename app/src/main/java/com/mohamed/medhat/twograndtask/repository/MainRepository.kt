@@ -34,9 +34,9 @@ class MainRepository @Inject constructor(private val webApi: WebApi) : Repositor
         }
     }
 
-    override suspend fun getPhotos(album: Album): List<Photo> {
+    override suspend fun getPhotos(albumId: Int): List<Photo> {
         return withContext(Dispatchers.IO) {
-            val response = webApi.getPhotos(album.id)
+            val response = webApi.getPhotos(albumId)
             if (response.isSuccessful && response.body() != null) {
                 response.body()!!
             } else {

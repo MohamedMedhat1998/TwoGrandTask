@@ -7,5 +7,5 @@ import com.mohamed.medhat.twograndtask.model.User
 interface Repository {
     suspend fun getRandomUser(): User
     suspend fun getAlbums(user: User): List<Album>
-    suspend fun getPhotos(album: Album): List<Photo>
+    suspend fun getPhotos(albumId: Int): List<Photo>
 }

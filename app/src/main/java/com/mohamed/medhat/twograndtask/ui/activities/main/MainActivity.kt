@@ -25,7 +25,7 @@ import com.mohamed.medhat.twograndtask.ui.compose.UserDetails
 import com.mohamed.medhat.twograndtask.ui.theme.TwoGrandTaskTheme
 import dagger.hilt.android.AndroidEntryPoint
 
-private const val TAG = "MainActivity"
+const val ALBUM_ID = "album-id"
 
 @ExperimentalFoundationApi
 @AndroidEntryPoint
@@ -60,7 +60,9 @@ fun MainBody(viewModel: MainViewModel = viewModel()) {
             LazyColumn {
                 items(it) {
                     AlbumDetails(album = it) {
-                        context.startActivity(Intent(context, AlbumActivity::class.java))
+                        context.startActivity(Intent(context, AlbumActivity::class.java).apply {
+                            putExtra(ALBUM_ID, it.id)
+                        })
                     }
                 }
             }
