@@ -61,4 +61,6 @@ dependencies {
     debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_version"
     // Gson
     implementation 'com.google.code.gson:gson:2.9.0'
+    // Coil
+    implementation("io.coil-kt:coil-compose:2.1.0")
 }
