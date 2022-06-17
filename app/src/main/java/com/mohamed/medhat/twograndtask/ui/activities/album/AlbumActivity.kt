@@ -10,7 +10,8 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -48,14 +49,12 @@ class AlbumActivity : ComponentActivity() {
 @ExperimentalFoundationApi
 @Composable
 fun AlbumsBody(viewModel: AlbumViewModel = viewModel()) {
-    var searchValue by remember {
-        mutableStateOf("")
-    }
+    val searchValue by viewModel.filter.observeAsState()
     val photos by viewModel.photos.observeAsState()
     Column(Modifier.fillMaxSize()) {
         Box(modifier = Modifier.heightIn(min = 48.dp)) {
             Surface(elevation = 4.dp) {
-                SearchTextField(value = searchValue, onValueChanged = { searchValue = it })
+                SearchTextField(value = searchValue ?: "", onValueChanged = { viewModel.setFilter(it) })
             }
         }
         photos?.let {
